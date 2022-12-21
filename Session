@@ -1,0 +1,112 @@
+//form-1
+<html>
+<body>
+	<form method="POST" action="logi.php">
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" name="unm"></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="pwd"></td>
+			</tr>
+			<td><input type="submit" name="submit" value="login"></td>
+		</table>
+	</form>
+	<a href="usepwd2.php">Register</a>
+</body>
+</html>
+
+//form-2
+<html>
+<body>
+	<form action="insert.php" method="POST">
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" name="unm"></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="pwd"></td>
+			</tr>
+			<tr>
+				<td>Email</td>
+				<td><input type="email" name="email"></td>
+			</tr>
+			<td><input type="submit" name="submit" value="login"></td>
+		</table>
+	</form>
+<body>
+</html>
+
+//insert
+<?php
+session_start();
+$con=mysqli_connect("localhost","root","","db1");
+
+$username =$_REQUEST['unm'];
+$password =$_REQUEST['pwd'];
+
+$insert="INSERT INTO `usernm`(`uname`,`pwd`) VALUES('$username','$password')";
+
+$res=mysqli_query($con,$insert);
+if($res)
+{
+	header("location:usepwd.php");
+}
+else
+	echo "Error";
+
+?>
+
+//login
+<?php
+session_start();
+$con=mysqli_connect("localhost","root","","db1");
+$nm=$_POST['unm'];
+$pwd=$_POST['pwd'];
+
+$sql="SELECT * FROM `usernm` WHERE `uname`='$nm' AND `pwd`='$pwd'";
+
+$res=mysqli_query($con,$sql);
+
+if(mysqli_num_rows($res) > 0)
+{
+	$row=mysqli_fetch_assoc($res);
+	$_SESSION['nm']=$row['uname'];
+	if(isset($_SESSION['nm']))
+	{
+		header("location:logindata.php");
+	}
+	else
+	{
+		echo"session not avilable";
+	}
+}
+else
+{
+	echo"Invalid Username or Password";
+}
+?>
+
+//logout
+<?php
+
+	session_start();
+	session_destroy();
+	header("location:usepwd.php");
+
+?>
+
+//home
+<?php
+
+	session_start();
+	echo "Welcome!!,".$_SESSION['nm'];
+	
+?>
+<a href="logout.php">Logout</a>
+
+
