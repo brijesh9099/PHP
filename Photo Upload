@@ -1,0 +1,152 @@
+Form.
+
+<html>
+<head>
+	<title>Data Form</title>
+</head>
+<body bgcolor="pink">		
+	<div class="form" id="form">
+	<form action="connection.php" method="post">
+        <table align="center"  border="2" cellpadding="5" cellspacing="5">
+		<h1 align="center">Stud Form</h1>                   
+			<tr>
+                <td>Enrollment No</td>                          
+                <td><input type="number" name="enm"></td>
+            </tr>                      	
+            <tr>
+                <td>Name</td>                          
+                <td><input type="nm" name="nm"></td>
+            </tr>
+			<tr>
+                <td>Email</td>                          
+                <td><input type="email" name="email"></td>
+            </tr>			
+			<tr>
+                <td>Contect</td>                          
+                <td><input type="con" name="con"></td>					
+            </tr>
+			<tr>
+				<td>Course</td>
+				<td><select value="02" name="d1">
+					<option name="d1" id="select" value="select">Select</option>
+					<option name="d1" id="select" value="BCA">BCA</option>
+					<option name="d1" id="select" value="BBA">BBA</option>
+					<option name="d1" id="select" value="Bcom">Bcom</option>
+				</td>
+			</tr>
+			<tr>				
+				<td>Gender</td>
+                <td>Male<input type="radio" value="Male" name="radio" id="51"><br>
+					Female<input type="radio" value="Female" name="radio" id="51"></td>
+			</tr>
+			<tr>
+				<td>City</td>
+				<td><select value="01" name="d0">
+					<option name="d0" id="select" value="select">Select</option>
+					<option name="d0" id="select" value="Rajkot">Rajkot</option>
+					<option name="d0" id="select" value="Morbi">Morbi</option>
+					<option name="d0" id="select" value="Ahmedabad">Ahmedabad</option>
+					<option name="d0" id="select" value="Jamnagar">Jamnagar</option>
+				</td>
+			</tr>
+			<tr>
+                <td>Address</td>                           
+                <td><textarea placeholder="enter your Address" name="add"></textarea></td>
+			</tr>
+			<tr>
+				<td>Photo</td>
+				<td><input type="file" name="photo" ></td>
+			</tr>
+			<tr>    
+                <td>
+                    <input type="submit" name="submit">
+                </td>								
+            </tr>
+			</table>
+		</form>
+		</div>
+	</body>
+</html>
+
+
+connection.
+
+<?php
+if(isset($_POST['submit']))
+{
+	
+include"config.php";
+$enm=$_REQUEST['enm'];
+$nm=$_REQUEST['nm'];
+$email=$_REQUEST['email'];
+$cot=$_REQUEST['con'];
+$course=$_REQUEST['d1'];
+$gender=$_REQUEST['radio'];
+$city=$_REQUEST['d0'];
+$add=$_REQUEST['add'];
+$photo=$_REQUEST['photo'];
+
+$sql="INSERT INTO `photo`(`enrollment`,`name`,`email`,`contact`,`course`,`gender`,`city`,`address`,`photo`)VALUES('$enm','$nm','$email','$cot','$course','$gender','$city','$add','$photo')";
+
+
+$res=mysqli_query($con,$sql);
+if($res)
+{
+	header("location:demo.php");
+}
+else
+{
+	echo"Fail";
+}
+}
+?>
+
+Select.
+
+<?php
+include "config.php";
+$sel="SELECT * from `photo` ";
+$res=mysqli_query($con,$sel);
+if($res)
+{
+	echo "Pass";
+}
+else
+{
+	echo "Fail";
+}
+?>
+<html>
+<body>
+<table align="center" border="1">
+<tr>
+	<th>Enrollment No.
+	<th>Name
+	<th>EMail
+	<th>Contact
+	<th>Course
+	<th>Gender
+	<th>City
+	<th>Address
+	<th>Photo
+</tr>
+<?php
+while($data=mysqli_fetch_assoc($res))
+{
+?>
+<tr>
+	<td><?php echo $data['enrollment'];?>
+	<td><?php echo $data['name'];?>
+	<td><?php echo $data['email'];?>
+	<td><?php echo $data['contact'];?>
+	<td><?php echo $data['course'];?>
+	<td><?php echo $data['gender'];?>
+	<td><?php echo $data['city'];?>
+	<td><?php echo $data['address'];?>
+	<td><img src="<?php echo "photo/".$data['photo'];?>" width="100px" alt="photo">
+</tr>
+<?php } ?>
+</table>
+</body>
+</html>
+
