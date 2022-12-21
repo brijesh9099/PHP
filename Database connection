@@ -1,0 +1,175 @@
+//config.php
+
+<?php
+
+$con=mysqli_connect("localhost","root","","brijesh");
+
+?>
+
+//form.php
+
+<html>
+<body>
+<form action="insert.php" method="POST">
+	<table>
+		<tr>
+			<td>Username</td>
+			<td><input type="text" name="unm"></td>
+		</tr>	
+		<tr>
+			<td>Email</td>
+			<td><input type="email" name="email"></td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td><input type="password" name="pwd"></td>
+		</tr>
+		<tr>
+		<td><input type="submit"></td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>
+
+//insert.php
+
+<?php
+
+include "config.php";
+
+$unm=$_REQUEST['unm'];
+$email=$_REQUEST['email'];
+$pwd=$_REQUEST['pwd'];
+
+$sql="INSERT INTO `stud` (`username`,`email`,`password`)VALUES ('$unm','$email','$pwd')";
+
+$res=mysqli_query($con,$sql);
+
+?>
+
+//select.php
+
+<?php
+
+include "config.php";
+
+$sql="SELECT * FROM `stud`";
+
+$res=mysqli_query($con,$sql);
+
+?>
+
+<html>
+<body>
+    <table border="15">
+        <tr>
+            <td>Username</td>
+            <td>Email</td>
+            <td>Password</td>
+            <td>Delete</td>
+            <td>Update</td>
+        </tr>
+        <?php
+        while($data=mysqli_fetch_assoc($res))
+        {
+        ?>
+        <tr>
+            <td><?php echo $data['username']; ?></td>
+            <?php $id= $data['id']?>
+            <td><?php echo $data['email']; ?></td>
+        
+            <td><?php echo $data['password']; ?></td>
+            <td><a href="delet.php?id=<?php echo $id;?>">Delete</a>
+            <td><a href="update.php?id=<?php echo $id;?>">Update</a>
+        </tr>
+        <?php
+        }
+        ?>
+    </table>
+</body>
+</html>
+
+
+//delete.php
+
+<?php
+
+include "config.php";
+
+$id=$_REQUEST['id'];
+$sql="DELETE FROM `stud` WHERE `id` = $id";
+
+$res=mysqli_query($con,$sql);
+
+if($res)
+{
+        echo "Connect";
+}
+else
+{
+    echo "Not Connect";
+}
+
+?>
+
+//update.php
+
+<?php
+
+include "config.php";
+
+$id=$_REQUEST['id'];
+$sql=" select *FROM `stud` WHERE `id` = $id";
+$res=mysqli_query($con,$sql);
+
+if($res)
+{
+    echo"connect";
+}
+else{
+    echo"not connect";
+}
+?>
+<html>
+<body>
+<form action="update2.php" method="POST">
+	<table>
+		<tr>
+			<td>Username</td>
+			<td><input type="text" name="unm"></td>
+		</tr>	
+		<tr>
+			<td>Email</td>
+			<td><input type="email" name="email"></td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td><input type="password" name="pwd"></td>
+		</tr>
+		<tr>
+		<td><input type="submit"></td>
+		</tr>
+	</table>
+</form>
+</body>
+</html>
+
+//update2.php
+
+<?php
+include"config.php";
+$unm=$_POST['unm'];
+$email=$_REQUEST['email'];
+$password=$_REQUEST['pwd'];
+
+$sql="update `stud` set `username`='$unm',`email`='$email',`password`='$password'";
+$result=mysqli_query($con,$sql);
+if($result)
+{
+    echo"connect";
+}
+else{
+    echo"not connect";
+}
+?>
